@@ -22,10 +22,10 @@ st.image("data//images.jpg")
 navigate = st.sidebar.radio("Which data you need",["Home.","Confirmed cases.","Active cases.","Cured cases.","Deaths.","Vaccinations."])
 
 df = pd.read_csv("data//covid_data.csv")
-df["date"]=pd.to_datetime(df["date"]).dt.strftime("%Y-%m-%d")
+df["date"]=pd.to_datetime(df["date"]).dt.strftime("%d-%m-%Y")
 
 vac_df = pd.read_csv("data//weekly_data.csv")
-vac_df["startdate"] = pd.to_datetime(vac_df["startdate"]).dt.strftime("%Y-%m-%d")
+vac_df["startdate"] = pd.to_datetime(vac_df["startdate"]).dt.strftime("%d-%m-%Y")
 
 pop_df = pd.read_csv("data//world_population.csv")
 
