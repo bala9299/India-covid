@@ -4,9 +4,7 @@ import pandas as pd
 import bar_chart_race as bcr
 
 st.markdown("""<style>
-               .main {
-                background-color: #F5F5F5
-                }
+               .main 
                 </style>
                 """,
                 unsafe_allow_html = True)
