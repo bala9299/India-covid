@@ -22,10 +22,10 @@ st.image("data//images.jpg")
 navigate = st.sidebar.radio("Which data you need",["Home.","Confirmed cases.","Active cases.","Cured cases.","Deaths.","Vaccinations."])
 
 df = pd.read_csv("data//covid_data.csv")
-df["date"]=pd.to_datetime(df["date"]).dt.strftime("%d-%m-%Y")
+df["date"]=pd.to_datetime(df["date"]).dt.strftime("%Y-%m-%d")
 
 vac_df = pd.read_csv("data//weekly_data.csv")
-vac_df["startdate"] = pd.to_datetime(vac_df["startdate"]).dt.strftime("%d-%m-%Y")
+vac_df["startdate"] = pd.to_datetime(vac_df["startdate"]).dt.strftime("%Y-%m-%d")
 
 pop_df = pd.read_csv("data//world_population.csv")
 
@@ -123,18 +123,14 @@ if navigate == "Vaccinations.":
     if N == "Total vaccinations.":
         st.write("Total number of vaccinations is ", vac_df["total"].sum())
         st.subheader("Vaccination by age")
-        
-        cols = ['startdate','children','teens','adults','middle_aged','senior']
-        subsetdf = vac_df[cols]
-        subsetdf.set_index("startdate",inplace=True)
-        cum_sum_df = subsetdf.cumsum(axis=0)
-        fig4=bcr.bar_chart_race(df=cum_sum_df,filename=None,figsize=(6,3),title="Bar chart of vaccination by peoples age")
-        st.write(fig4)
-        st.markdown('Childrens (below 13)')
-        st.markdown('Teens (13 - 18)')
-        st.markdown('Adults (18 - 45)')
-        st.markdown('Middle aged (45 - 60)')
-        st.markdown('Seniors (above 60')
+        fig7 = px.line(vac_df,x='startdate')
+        fig7.add_scatter(x=vac_df['startdate'],y=vac_df['children'],mode='lines',name='Childrens (below 13)')  
+        fig7.add_scatter(x=vac_df['startdate'],y=vac_df['teens'],mode='lines',name='Teens (13 - 18)') 
+        fig7.add_scatter(x=vac_df['startdate'],y=vac_df['adults'],mode='lines',name='Adults (18 - 45)') 
+        fig7.add_scatter(x=vac_df['startdate'],y=vac_df['middle_aged'],mode='lines',name='Middle aged (45 - 60)') 
+        fig7.add_scatter(x=vac_df['startdate'],y=vac_df['senior'],mode='lines',name='Seniors (above 60')      
+        fig7.update_layout(width=800,showlegend=True,hovermode='x',yaxis_title='vaccination counts',title='Dose one vaccination')
+        st.write(fig7)
 
         st.subheader("Total vaccination by age")
         st.write("Total number of childrens vaccination is ", vac_df["children"].sum())
